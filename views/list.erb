@@ -5,7 +5,7 @@
 
   <ul>
     <% @list.tasks().each() do |task| %>
-    <li><%= task.description() %> [<a href="/delete_task/<%= task.id()%>">x</a>]</li>
+    <li><%= task.description() %> [<a href="/tasks/delete/<%= task.id()%>">x</a>]</li>
     <% end %>
   </ul>
 

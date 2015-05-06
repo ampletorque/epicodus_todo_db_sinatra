@@ -7,6 +7,7 @@ class Todo
       @description = attributes.fetch(:description)
       @list_id = attributes.fetch(:list_id)
       # @due_date = attributes.fetch(:due_date)
+      @id = attributes.fetch(:id)
     end
 
     define_singleton_method(:all) do
@@ -16,12 +17,27 @@ class Todo
         description = task.fetch("description")
         list_id = task.fetch("list_id").to_i()
     #    due_date = task.fetch("due_date")
-        tasks.push(Todo.new({:description => description, :list_id => list_id}))
+        tasks.push(Todo.new({:description => description, :list_id => list_id, :id => nil}))
     #tasks.push(Todo.new({:description => description, :list_id => list_id, :due_date => due_date}))
-
     end
       tasks
     end
+
+    define_singleton_method(:find) do |id|
+      found_task = nil
+      Todo.all().each() do |task|
+        if task.id().==(id)
+          found_task = task
+        end
+      end
+      found_task
+    end
+
+   define_method(:delete) do
+      DB.exec("UPDATE tasks SET list_id = 0 WHERE id = #{self.id()}")
+      #update instance to reflect zeroing 
+   end
+
 
     define_method(:save) do
 #      DB.exec("INSERT INTO tasks (description, list_id, due_date) VALUES ('#{@description}', #{@list_id}, '#{@due_date}');")

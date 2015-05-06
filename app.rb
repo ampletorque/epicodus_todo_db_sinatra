@@ -26,6 +26,16 @@ get("/tasks/new/:id") do
   erb(:task_form)
 end
 
+get("/tasks/delete/:id") do
+  @task = Task.find(params.fetch("id").to_i())
+  @task.delete()
+  erb(:deleted_task_success)
+end
+
+post("/deleted_task_success/:list_id") do
+  @list = List.find(params.fetch("list_id").to_i())
+  erb(:success)
+end
 
 post("/lists") do
   name = params.fetch("description")
@@ -44,7 +54,7 @@ post("/tasks") do
   description = params.fetch("description")
   list_id = params.fetch('list_id').to_i()
   @list = List.find(list_id)
-  @task = Todo.new(:description => description, :list_id => list_id)
+  @task = Todo.new(:description => description, :list_id => list_id, :id => nil)
   @task.save()
   erb(:success)
 end
